@@ -32,3 +32,8 @@ resource "google_project_iam_member" "service_account" {
   role    = "roles/iam.serviceAccountUser"
 }
 
+resource "google_project_iam_member" "service_github" {
+  member  = google_service_account.cnsrun-cloudbuild.member
+  project = "cloudrun-hands-on-473403"
+  role    = "roles/secretmanager.secretAccessor"
+}
