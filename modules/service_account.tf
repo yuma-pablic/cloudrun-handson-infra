@@ -74,6 +74,12 @@ resource "google_project_iam_member" "object_user" {
   role    = "roles/storage.objectUser"
 }
 
+resource "google_project_iam_member" "artifact_registry_reader" {
+  member  = google_service_account.cnsrun-clouddeploy.member
+  project = "cloudrun-hands-on-473403"
+  role    = "roles/artifactregistry.reader"
+}
+
 
 
 
