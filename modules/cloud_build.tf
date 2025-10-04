@@ -1,13 +1,3 @@
-data "google_secret_manager_secret" "sample-secret" {
-  secret_id = "github"
-}
-
-data "google_secret_manager_secret_version" "sample-version" {
-  project = "cloudrun-hands-on-473403"
-  secret  = data.google_secret_manager_secret.sample-secret.id
-  version = "latest"
-}
-
 resource "google_secret_manager_secret_iam_member" "policy" {
   project   = data.google_secret_manager_secret.sample-secret.project
   secret_id = data.google_secret_manager_secret.sample-secret.secret_id

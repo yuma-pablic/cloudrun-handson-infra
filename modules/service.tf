@@ -12,7 +12,7 @@ resource "google_project_service" "default" {
   ])
 
   disable_dependent_services = null
-  disable_on_destroy         = null
+  disable_on_destroy         = false
   project                    = "cloudrun-hands-on-473403"
   service                    = each.value
 }
