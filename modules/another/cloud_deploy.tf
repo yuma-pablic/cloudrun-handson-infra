@@ -1,0 +1,28 @@
+resource "google_clouddeploy_target" "frontend" {
+  location          = "asia-northeast1"
+  name              = "cnsrun-frontend"
+  deploy_parameters = {}
+  description       = "Cloud Deploy target for cnsrun-frontend"
+
+  execution_configs {
+    usages            = ["RENDER", "DEPLOY"]
+    execution_timeout = "3600s"
+  }
+
+  project          = "cloudrun-hands-on-473403"
+  require_approval = false
+
+  run {
+    location = "projects/cloudrun-hands-on-473403/locations/asia-northeast1"
+  }
+
+  annotations = {
+    "run.googleapis.com/ingress"               = "all"
+    "autoscaling.knative.dev/maxScale"         = "2"
+    "run.googleapis.com/execution-environment" = "gen2"
+  }
+
+  labels = {
+    app = "cnsrun-frontend"
+  }
+}
