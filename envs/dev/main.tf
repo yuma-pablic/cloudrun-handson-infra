@@ -38,3 +38,9 @@ module "ci_cd_backend" {
   repository_id   = module.set_up.repository_id
   service_account = module.set_up.cloud_build_service_account
 }
+
+module "network" {
+  source     = "../../modules/network"
+  project_id = local.project_id
+  region     = local.region
+}
