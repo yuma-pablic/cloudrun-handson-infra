@@ -10,6 +10,11 @@ module "set_up" {
   environment = local.environment
 }
 
+module "register" {
+  source      = "../../modules/register"
+  environment = local.environment
+  region      = local.region
+}
 module "ci_cd_frontend" {
   source          = "../../modules/ci-cd-v2"
   project_id      = local.project_id
