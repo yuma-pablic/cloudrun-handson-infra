@@ -39,6 +39,10 @@ module "ci_cd_backend" {
   service_account = module.set_up.cloud_build_service_account
 }
 
+# ╭──────────────────────────────────────────────────────────╮
+# │ You need to comment this out once to create the resource.│
+# ╰──────────────────────────────────────────────────────────╯
+
 module "network" {
   source     = "../../modules/network"
   project_id = local.project_id
