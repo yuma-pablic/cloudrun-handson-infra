@@ -1,5 +1,5 @@
 resource "google_clouddeploy_target" "frontend" {
-  location          = "asia-northeast1"
+  location          = var.region
   name              = "cnsrun-frontend"
   deploy_parameters = {}
   description       = "Cloud Deploy target for cnsrun-frontend"
@@ -9,7 +9,7 @@ resource "google_clouddeploy_target" "frontend" {
     execution_timeout = "3600s"
   }
 
-  project          = "cloudrun-hands-on-473403"
+  project          = var.project_id
   require_approval = false
 
   run {
