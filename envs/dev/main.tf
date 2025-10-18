@@ -15,36 +15,42 @@ module "register" {
   environment = local.environment
   region      = local.region
 }
-module "ci_cd_frontend" {
-  source          = "../../modules/ci-cd-v2"
-  project_id      = local.project_id
-  region          = local.region
-  environment     = local.environment
-  app             = "frontend"
-  filename        = "../../../../yuma-pablic/cloudrun-handson/app/frontend/cloudbuild_push.yaml"
-  included_files  = ["../../../../yuma-pablic/cloudrun-handson/app/frontend/cloudbuild_push.yaml"]
-  repository_id   = module.set_up.repository_id
-  service_account = module.set_up.cloud_build_service_account
-}
-
-module "ci_cd_backend" {
-  source          = "../../modules/ci-cd-v2"
-  project_id      = local.project_id
-  region          = local.region
-  environment     = local.environment
-  app             = "backend"
-  filename        = "../../../../yuma-pablic/cloudrun-handson/app/backend/cloudbuild_push.yaml"
-  included_files  = ["../../../../yuma-pablic/cloudrun-handson/app/backend/cloudbuild_push.yaml"]
-  repository_id   = module.set_up.repository_id
-  service_account = module.set_up.cloud_build_service_account
-}
-
+# module "ci_cd_frontend" {
+#   source          = "../../modules/ci-cd-v2"
+#   project_id      = local.project_id
+#   region          = local.region
+#   environment     = local.environment
+#   app             = "frontend"
+#   filename        = "../../../../yuma-pablic/cloudrun-handson/app/frontend/cloudbuild_push.yaml"
+#   included_files  = ["../../../../yuma-pablic/cloudrun-handson/app/frontend/cloudbuild_push.yaml"]
+#   repository_id   = module.set_up.repository_id
+#   service_account = module.set_up.cloud_build_service_account
+# }
+#
+# module "ci_cd_backend" {
+#   source          = "../../modules/ci-cd-v2"
+#   project_id      = local.project_id
+#   region          = local.region
+#   environment     = local.environment
+#   app             = "backend"
+#   filename        = "../../../../yuma-pablic/cloudrun-handson/app/backend/cloudbuild_push.yaml"
+#   included_files  = ["../../../../yuma-pablic/cloudrun-handson/app/backend/cloudbuild_push.yaml"]
+#   repository_id   = module.set_up.repository_id
+#   service_account = module.set_up.cloud_build_service_account
+# }
+#
 # ╭──────────────────────────────────────────────────────────╮
 # │ You need to comment this out once to create the resource.│
 # ╰──────────────────────────────────────────────────────────╯
 
-module "network" {
-  source     = "../../modules/network"
-  project_id = local.project_id
-  region     = local.region
-}
+# module "network" {
+#   source     = "../../modules/network"
+#   project_id = local.project_id
+#   region     = local.region
+# }
+#
+# module "load_balancer" {
+#   source = "../../modules/load_balancer"
+# }
+#
+
