@@ -3,19 +3,19 @@ module "enable_apis" {
   project_id = local.project_id
 }
 
-module "set_up" {
-  source      = "../../modules/set_up"
-  project_id  = local.project_id
-  region      = local.region
-  environment = local.environment
-}
-
-module "register" {
-  source      = "../../modules/register"
-  environment = local.environment
-  region      = local.region
-}
-
+# module "set_up" {
+#   source      = "../../modules/set_up"
+#   project_id  = local.project_id
+#   region      = local.region
+#   environment = local.environment
+# }
+#
+# module "register" {
+#   source      = "../../modules/register"
+#   environment = local.environment
+#   region      = local.region
+# }
+#
 # module "ci_cd_frontend" {
 #   source          = "../../modules/ci-cd-v2"
 #   project_id      = local.project_id
@@ -39,7 +39,7 @@ module "register" {
 #   repository_id   = module.set_up.repository_id
 #   service_account = module.set_up.cloud_build_service_account
 # }
-#
+# #
 # ╭──────────────────────────────────────────────────────────╮
 # │ You need to comment this out once to create the resource.│
 # ╰──────────────────────────────────────────────────────────╯
@@ -52,6 +52,11 @@ module "register" {
 #
 # module "load_balancer" {
 #   source = "../../modules/load_balancer"
+# }
+#
+# module "db" {
+#   source     = "../../modules/db"
+#   project_id = local.project_id
 # }
 #
 
