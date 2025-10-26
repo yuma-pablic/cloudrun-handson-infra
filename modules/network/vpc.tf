@@ -4,3 +4,5 @@ resource "google_compute_network" "vpc" {
   routing_mode            = "REGIONAL"
   mtu                     = 1460
 }
+
+
