@@ -39,7 +39,7 @@ resource "google_sql_database_instance" "instance" {
 resource "google_sql_user" "users" {
   name     = "app"
   instance = google_sql_database_instance.instance.name
-  password = "Cnsrun-db-pass-1234"
+  password = "pMYvcTME?_N@#<Z4"
 }
 
 resource "google_sql_database" "app_db" {
