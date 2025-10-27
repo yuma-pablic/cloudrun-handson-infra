@@ -43,10 +43,11 @@ resource "google_service_account" "cnsrun_app_frontend" {
   display_name = "Service Account for Service Account for cnsrun-frontend"
 }
 
-resource "google_project_iam_member" "app" {
-  member  = google_service_account.cnsrun_app_frontend.member
-  project = var.project_id
-  role    = "roles/run.invoker"
+resource "google_cloud_run_service_iam_member" "frontend_invoke_backend" {
+  service  = "cnsrun-backend"
+  location = "asia-northeast1"
+  role     = "roles/run.invoker"
+  member   = google_service_account.cnsrun_app_frontend.member
 }
 
 resource "google_project_iam_member" "frontend_artifact_registry_reader" {
@@ -99,4 +100,16 @@ resource "google_secret_manager_secret_iam_member" "batch_db_password" {
   secret_id = "cnsrun-app-db-password"
   member    = google_service_account.cnsrun_app_batch.member
   role      = "roles/secretmanager.secretAccessor"
+}
+
+resource "google_service_account" "neg" {
+  account_id   = "cnsrun-app-neg"
+  display_name = "Service Account for Cloud Build in cnsrun"
+}
+
+resource "google_cloud_run_service_iam_member" "neg_invoker" {
+  service  = "cnsrun-frontend"
+  location = "asia-northeast1"
+  role     = "roles/run.invoker"
+  member   = google_service_account.neg.member
 }

@@ -9,7 +9,12 @@ resource "google_project_service" "default" {
     "clouddeploy.googleapis.com",
     "servicenetworking.googleapis.com",
     "sqladmin.googleapis.com",
-    "vpcaccess.googleapis.com"
+    "vpcaccess.googleapis.com",
+    "domains.googleapis.com",
+    "dns.googleapis.com",
+    "containeranalysis.googleapis.com",
+    "cloudkms.googleapis.com",
+    "binaryauthorization.googleapis.com"
   ])
 
   disable_dependent_services = null
