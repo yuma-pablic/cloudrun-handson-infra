@@ -17,7 +17,7 @@ module "register" {
 }
 
 module "ci_cd_frontend" {
-  source          = "../../modules/ci-cd-v2"
+  source          = "../../modules/devops"
   project_id      = local.project_id
   region          = local.region
   environment     = local.environment
@@ -26,10 +26,21 @@ module "ci_cd_frontend" {
   included_files  = ["../../../../yuma-pablic/cloudrun-handson/app/frontend/**"]
   repository_id   = "projects/cloudrun-hands-on-473403/locations/asia-northeast1/connections/dev-cloudrun-handson-infra/repositories/dev-cnsrun-app"
   service_account = "projects/cloudrun-hands-on-473403/serviceAccounts/cnsrun-cloudbuild@cloudrun-hands-on-473403.iam.gserviceaccount.com"
+
+  # KMS configuration
+  create_kms   = true
+  keyring_name = "cnsrun-keyring"
+  key_name     = "cnsrun-attestor-key"
+
+  # Binary Authorization configuration
+  create_binary_auth = true
+  attestor_name      = "cnsrun-attestor"
+  note_id            = "cnsrun-attestor-note"
+  note_description   = "Attestor for Cloud Run"
 }
 
 module "ci_cd_backend" {
-  source          = "../../modules/ci-cd-v2"
+  source          = "../../modules/devops"
   project_id      = local.project_id
   region          = local.region
   environment     = local.environment

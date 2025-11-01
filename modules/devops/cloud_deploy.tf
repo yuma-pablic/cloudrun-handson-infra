@@ -13,7 +13,7 @@ resource "google_clouddeploy_target" "app" {
   require_approval = false
 
   run {
-    location = "projects/cloudrun-hands-on-473403/locations/asia-northeast1"
+    location = "projects/${var.project_id}/locations/${var.region}"
   }
 
   annotations = {
