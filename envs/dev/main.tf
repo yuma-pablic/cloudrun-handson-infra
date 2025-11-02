@@ -4,10 +4,11 @@ module "enable_apis" {
 }
 
 module "set_up" {
-  source      = "../../modules/set_up"
-  project_id  = local.project_id
-  region      = local.region
-  environment = local.environment
+  source              = "../../modules/set_up"
+  project_id          = local.project_id
+  region              = local.region
+  environment         = local.environment
+  create_binary_auth  = true
 }
 
 module "register" {
@@ -59,6 +60,12 @@ module "network" {
   source     = "../../modules/network"
   project_id = local.project_id
   region     = local.region
+}
+
+module "db" {
+  source                          = "../../modules/db"
+  vpc_self_link                   = module.network.vpc_self_link
+  private_vpc_connection_network  = module.network.private_vpc_connection_network
 }
 
 module "load_balancer" {
