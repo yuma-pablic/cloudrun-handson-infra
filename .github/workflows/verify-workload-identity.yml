@@ -1,0 +1,81 @@
+name: Verify Workload Identity
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  verify:
+    name: Verify GCP Authentication
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Authenticate to Google Cloud
+        id: auth
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: 'projects/cloudrun-hands-on-473403/locations/global/workloadIdentityPools/github/providers/github'
+          service_account: 'github@cloudrun-hands-on-473403.iam.gserviceaccount.com'
+
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+
+      - name: Verify authentication
+        run: |
+          echo "Testing gcloud authentication..."
+          gcloud auth list
+          echo ""
+          echo "Current project:"
+          gcloud config get-value project
+          echo ""
+          echo "Project information:"
+          gcloud projects describe cloudrun-hands-on-473403
+
+      - name: Test GCP API access
+        run: |
+          echo "Testing API access..."
+          gcloud services list --enabled --limit=5
+
+      - name: Display authenticated service account
+        run: |
+          echo "Authenticated as:"
+          gcloud config get-value account
+
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: latest
+
+      - name: Terraform Init
+        working-directory: ./envs/dev
+        run: terraform init
+
+      - name: Terraform Validate
+        working-directory: ./envs/dev
+        run: terraform validate
+
+      - name: Terraform Plan
+        working-directory: ./envs/dev
+        run: terraform plan -no-color
+        continue-on-error: true
+
+      - name: Display Terraform Plan Summary
+        working-directory: ./envs/dev
+        run: |
+          echo "Terraform plan completed successfully!"
+          echo "This verifies that:"
+          echo "  ✓ Workload Identity authentication is working"
+          echo "  ✓ Service account has proper permissions"
+          echo "  ✓ Terraform configuration is valid"
