@@ -27,14 +27,83 @@ EOT
   project = var.project_id
 }
 
-resource "google_service_account_iam_member" "workload_identity_sa_iam" {
-  service_account_id = google_service_account.main.name
-  role               = "roles/iam.workloadIdentityUser"
-  member             = "principal://iam.googleapis.com/${google_iam_workload_identity_pool.main.name}/subject/yuma-pablic/cloudrun-handson-infra"
+# ============================================
+# Service Account: github-terraform
+# 用途: Terraform でのインフラ管理専用
+# ============================================
+resource "google_service_account" "terraform" {
+  account_id   = "github-terraform"
+  display_name = "GitHub Actions - Terraform"
+  project      = var.project_id
 }
 
-resource "google_service_account" "main" {
-  account_id   = "github"
-  display_name = "github"
+resource "google_service_account_iam_member" "terraform_workload_identity" {
+  service_account_id = google_service_account.terraform.name
+  role               = "roles/iam.workloadIdentityUser"
+  member             = "principalSet://iam.googleapis.com/${google_iam_workload_identity_pool.main.name}/attribute.repository/yuma-pablic/cloudrun-handson-infra"
+}
+
+# Terraform 実行に必要な権限
+resource "google_project_iam_member" "terraform_editor" {
+  project = var.project_id
+  role    = "roles/editor"
+  member  = google_service_account.terraform.member
+}
+
+# Terraform State 管理用（Cloud Storage アクセス）
+resource "google_project_iam_member" "terraform_storage_admin" {
+  project = var.project_id
+  role    = "roles/storage.admin"
+  member  = google_service_account.terraform.member
+}
+
+# ============================================
+# Service Account: github-deploy
+# 用途: アプリケーションのビルド・デプロイ専用
+# ============================================
+resource "google_service_account" "deploy" {
+  account_id   = "github-deploy"
+  display_name = "GitHub Actions - App Deploy"
   project      = var.project_id
+}
+
+resource "google_service_account_iam_member" "deploy_workload_identity" {
+  service_account_id = google_service_account.deploy.name
+  role               = "roles/iam.workloadIdentityUser"
+  member             = "principalSet://iam.googleapis.com/${google_iam_workload_identity_pool.main.name}/attribute.repository/yuma-pablic/cloudrun-handson"
+}
+
+# Cloud Build トリガー実行権限
+resource "google_project_iam_member" "deploy_cloudbuild_builds_editor" {
+  project = var.project_id
+  role    = "roles/cloudbuild.builds.editor"
+  member  = google_service_account.deploy.member
+}
+
+# Cloud Deploy パイプライン実行権限
+resource "google_project_iam_member" "deploy_clouddeploy_releaser" {
+  project = var.project_id
+  role    = "roles/clouddeploy.releaser"
+  member  = google_service_account.deploy.member
+}
+
+# Artifact Registry への push/pull 権限
+resource "google_project_iam_member" "deploy_artifactregistry_writer" {
+  project = var.project_id
+  role    = "roles/artifactregistry.writer"
+  member  = google_service_account.deploy.member
+}
+
+# Cloud Run への読み取り権限（デプロイ状況確認用）
+resource "google_project_iam_member" "deploy_run_viewer" {
+  project = var.project_id
+  role    = "roles/run.viewer"
+  member  = google_service_account.deploy.member
+}
+
+# Service Account として動作する権限
+resource "google_project_iam_member" "deploy_service_account_user" {
+  project = var.project_id
+  role    = "roles/iam.serviceAccountUser"
+  member  = google_service_account.deploy.member
 }
