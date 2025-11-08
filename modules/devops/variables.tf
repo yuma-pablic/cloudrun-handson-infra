@@ -9,15 +9,6 @@ variable "region" {
 variable "environment" {
   type = string
 }
-
-variable "filename" {
-  type = string
-}
-
-variable "included_files" {
-  type = list(string)
-}
-
 variable "app" {
   type = string
 }
@@ -72,4 +63,8 @@ variable "note_description" {
   description = "The human-readable description for the attestation note"
   type        = string
   default     = "Attestor for Cloud Run"
+}
+
+variable "app_name" {
+  type = string
 }

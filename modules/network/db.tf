@@ -1,5 +1,5 @@
 resource "google_compute_global_address" "private_ip_address" {
-  name          = "cnsrn-cnsrun-private-ip-address"
+  name          = local.db_private_ip
   purpose       = "VPC_PEERING"
   address_type  = "INTERNAL"
   prefix_length = 24

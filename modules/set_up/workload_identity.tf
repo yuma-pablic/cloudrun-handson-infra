@@ -10,7 +10,7 @@ resource "google_iam_workload_identity_pool_provider" "main" {
   workload_identity_pool_provider_id = "github"
   display_name                       = "GitHub"
   disabled                           = false
-   attribute_condition = <<EOT
+  attribute_condition                = <<EOT
     attribute.repository == "yuma-pablic/cloudrun-handson-infra" || attribute.repository == "yuma-pablic/cloudrun-handson"
 EOT
 

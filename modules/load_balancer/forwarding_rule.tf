@@ -1,5 +1,5 @@
 resource "google_compute_global_forwarding_rule" "cnsrun-lb" {
-  name                  = "cnsrun-lb"
+  name                  = local.forwarding_rule_name
   load_balancing_scheme = "EXTERNAL_MANAGED"
   ip_address            = google_compute_global_address.default.address
   port_range            = "443"

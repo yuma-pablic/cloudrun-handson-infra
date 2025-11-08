@@ -1,5 +1,5 @@
 resource "google_sql_database_instance" "instance" {
-  name                = "cnsrun-app-instance"
+  name                = local.instance_name
   region              = "asia-northeast1"
   database_version    = "POSTGRES_15"
   deletion_protection = false
@@ -26,6 +26,6 @@ resource "google_sql_user" "users" {
 }
 
 resource "google_sql_database" "app_db" {
-  name     = "cnsrun"
+  name     = local.database_name
   instance = google_sql_database_instance.instance.name
 }

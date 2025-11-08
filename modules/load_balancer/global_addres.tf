@@ -1,5 +1,5 @@
 resource "google_compute_global_address" "default" {
-  name = "cnsrun-ip"
+  name = local.ip_name
 }
 
 

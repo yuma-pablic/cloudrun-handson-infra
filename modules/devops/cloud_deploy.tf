@@ -1,8 +1,8 @@
 resource "google_clouddeploy_target" "app" {
   location          = var.region
-  name              = "cnsrun-${var.app}"
+  name              = local.pipeline_name
   deploy_parameters = {}
-  description       = "Cloud Deploy target for cnsrun-${var.app}"
+  description       = "Cloud Deploy target for ${local.pipeline_name}"
 
   execution_configs {
     usages            = ["RENDER", "DEPLOY"]
@@ -23,6 +23,6 @@ resource "google_clouddeploy_target" "app" {
   }
 
   labels = {
-    app = "cnsrun-${var.app}"
+    app = local.pipeline_name
   }
 }

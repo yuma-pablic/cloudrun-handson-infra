@@ -7,3 +7,7 @@ variable "private_vpc_connection_network" {
   description = "The network of the VPC peering connection"
   type        = string
 }
+
+variable "app_name" {
+  type = string
+}

@@ -1,5 +1,5 @@
 resource "google_secret_manager_secret" "db_password" {
-  secret_id = "cnsrun-app-db-password"
+  secret_id = local.db_password_secret
 
   replication {
     user_managed {

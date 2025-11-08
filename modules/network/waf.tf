@@ -1,5 +1,5 @@
 resource "google_compute_security_policy" "waf_policy" {
-  name    = "cnsrun-waf-policy"
+  name    = local.waf_policy_name
   project = var.project_id
 
   rule {

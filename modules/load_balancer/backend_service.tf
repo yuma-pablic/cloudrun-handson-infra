@@ -1,5 +1,5 @@
 resource "google_compute_backend_service" "default" {
-  name                  = "cnsrun-backend-services"
+  name                  = local.backend_service_name
   load_balancing_scheme = "EXTERNAL_MANAGED"
 
   lifecycle {

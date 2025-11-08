@@ -1,5 +1,5 @@
 resource "google_compute_ssl_certificate" "default" {
-  name_prefix = "cnsrun-certificate"
+  name_prefix = local.certificate_prefix
   private_key = tls_private_key.alb.private_key_pem
   certificate = tls_self_signed_cert.alb.cert_pem
 
@@ -16,7 +16,7 @@ resource "tls_private_key" "alb" {
 resource "tls_self_signed_cert" "alb" {
   private_key_pem = tls_private_key.alb.private_key_pem
   subject {
-   country             = "JP"
+    country             = "JP"
     province            = "Kanagawa"
     locality            = "Yokohama"
     organization        = "uma-arai"

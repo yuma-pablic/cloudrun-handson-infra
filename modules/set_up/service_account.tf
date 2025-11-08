@@ -1,6 +1,6 @@
 resource "google_service_account" "cnsrun_app_cloud_deploy" {
-  account_id   = "cnsrun-clouddeploy"
-  display_name = "Service Account for Cloud Deploy in cnsrun"
+  account_id   = local.cloud_deploy_sa_id
+  display_name = "Service Account for Cloud Deploy in ${var.app_name}"
 }
 
 resource "google_project_iam_member" "cloud_deploy_artifact_registry" {
@@ -22,12 +22,12 @@ resource "google_project_iam_member" "cloud_deploy_service_account_user" {
 }
 
 resource "google_service_account" "cnsrun_app_frontend" {
-  account_id   = "cnsrun-app-frontend"
-  display_name = "Service Account for Service Account for cnsrun-frontend"
+  account_id   = local.frontend_sa_id
+  display_name = "Service Account for Service Account for ${local.frontend_service_name}"
 }
 
 resource "google_cloud_run_service_iam_member" "frontend_invoke_backend" {
-  service  = "cnsrun-backend"
+  service  = local.backend_service_name
   location = "asia-northeast1"
   role     = "roles/run.invoker"
   member   = google_service_account.cnsrun_app_frontend.member
@@ -40,8 +40,8 @@ resource "google_project_iam_member" "frontend_artifact_registry_reader" {
 }
 
 resource "google_service_account" "cnsrun_app_backend" {
-  account_id   = "cnsrun-app-backend"
-  display_name = "Service Account for Service Account for cnsrun-frontend"
+  account_id   = local.backend_sa_id
+  display_name = "Service Account for Service Account for ${local.backend_service_name}"
 }
 
 resource "google_project_iam_member" "backend_artifact_registry_reader" {
@@ -63,8 +63,8 @@ resource "google_project_iam_member" "cnsrun_app_db" {
 }
 
 resource "google_service_account" "cnsrun_app_batch" {
-  account_id   = "cnsrun-app-batch"
-  display_name = "Service Account for cnsrun-app-batch"
+  account_id   = local.batch_sa_id
+  display_name = "Service Account for ${var.app_name}-app-batch"
 }
 
 resource "google_project_iam_member" "batch_run_invoker" {
@@ -80,18 +80,18 @@ resource "google_project_iam_member" "batch_cloudsql_client" {
 }
 
 resource "google_secret_manager_secret_iam_member" "batch_db_password" {
-  secret_id = "cnsrun-app-db-password"
+  secret_id = local.db_password_secret
   member    = google_service_account.cnsrun_app_batch.member
   role      = "roles/secretmanager.secretAccessor"
 }
 
 resource "google_service_account" "neg" {
-  account_id   = "cnsrun-app-neg"
-  display_name = "Service Account for Cloud Build in cnsrun"
+  account_id   = local.neg_sa_id
+  display_name = "Service Account for Cloud Build in ${var.app_name}"
 }
 
 resource "google_cloud_run_service_iam_member" "neg_invoker" {
-  service  = "cnsrun-frontend"
+  service  = local.frontend_service_name
   location = "asia-northeast1"
   role     = "roles/run.invoker"
   member   = google_service_account.neg.member
