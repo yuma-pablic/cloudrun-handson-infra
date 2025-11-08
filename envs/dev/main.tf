@@ -63,6 +63,53 @@ module "cloud_run_job" {
   app_name   = local.app_name
 }
 
+module "cloud_run_backend" {
+  source                       = "../../modules/cloud-run"
+  project_id                   = local.project_id
+  service_account_id           = "${local.app_name}-app-backend"
+  service_account_display_name = "Service Account for ${local.app_name}-backend"
+
+  project_roles = [
+    "roles/artifactregistry.reader",
+    "roles/secretmanager.secretAccessor",
+    "roles/cloudsql.client",
+    "roles/logging.logWriter"
+  ]
+}
+
+module "cloud_run_frontend" {
+  source                       = "../../modules/cloud-run"
+  project_id                   = local.project_id
+  service_account_id           = "${local.app_name}-app-frontend"
+  service_account_display_name = "Service Account for ${local.app_name}-frontend"
+
+  project_roles = [
+    "roles/artifactregistry.reader",
+    "roles/logging.logWriter"
+  ]
+
+  service_invoker_bindings = [
+    {
+      service  = "${local.app_name}-backend"
+      location = local.region
+    }
+  ]
+}
+
+module "cloud_run_neg" {
+  source                       = "../../modules/cloud-run"
+  project_id                   = local.project_id
+  service_account_id           = "${local.app_name}-app-neg"
+  service_account_display_name = "Service Account for NEG in ${local.app_name}"
+
+  service_invoker_bindings = [
+    {
+      service  = "${local.app_name}-frontend"
+      location = local.region
+    }
+  ]
+}
+
 # ╭──────────────────────────────────────────────────────────╮
 # │ You need to comment this out once to create the resource.│
 # ╰──────────────────────────────────────────────────────────╯
