@@ -11,6 +11,10 @@ tasks:
     desc: Lint terraform files
     cmds:
       - tflint --recursive
+  dev-init:
+    desc: Initialize terraform for dev
+    cmds:
+      - cd envs/dev && terraform init
   dev-plan:
     desc: Plan terraform for dev
     cmds:
