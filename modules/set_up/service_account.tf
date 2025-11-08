@@ -12,10 +12,6 @@ resource "google_service_account" "cnsrun_app_backend" {
   display_name = "Service Account for Service Account for ${local.backend_service_name}"
 }
 
-resource "google_service_account" "cnsrun_app_batch" {
-  account_id   = local.batch_sa_id
-  display_name = "Service Account for ${var.app_name}-app-batch"
-}
 resource "google_service_account" "neg" {
   account_id   = local.neg_sa_id
   display_name = "Service Account for Cloud Build in ${var.app_name}"

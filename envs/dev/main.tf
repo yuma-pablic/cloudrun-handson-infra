@@ -57,6 +57,12 @@ module "db" {
   app_name                       = local.app_name
 }
 
+module "cloud_run_job" {
+  source     = "../../modules/cloud_run_job"
+  project_id = local.project_id
+  app_name   = local.app_name
+}
+
 # ╭──────────────────────────────────────────────────────────╮
 # │ You need to comment this out once to create the resource.│
 # ╰──────────────────────────────────────────────────────────╯
