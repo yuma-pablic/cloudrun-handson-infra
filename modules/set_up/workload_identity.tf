@@ -73,13 +73,6 @@ resource "google_service_account_iam_member" "deploy_workload_identity" {
   member             = "principalSet://iam.googleapis.com/${google_iam_workload_identity_pool.main.name}/attribute.repository/yuma-pablic/cloudrun-handson"
 }
 
-# Cloud Build トリガー実行権限
-resource "google_project_iam_member" "deploy_cloudbuild_builds_editor" {
-  project = var.project_id
-  role    = "roles/cloudbuild.builds.editor"
-  member  = google_service_account.deploy.member
-}
-
 # Cloud Deploy パイプライン実行権限
 resource "google_project_iam_member" "deploy_clouddeploy_releaser" {
   project = var.project_id
@@ -105,5 +98,13 @@ resource "google_project_iam_member" "deploy_run_viewer" {
 resource "google_project_iam_member" "deploy_service_account_user" {
   project = var.project_id
   role    = "roles/iam.serviceAccountUser"
+  member  = google_service_account.deploy.member
+}
+
+# Cloud Deploy が使用する Cloud Storage バケットへのアクセス権限
+# storage.buckets.get 権限が必要なため storage.admin を付与
+resource "google_project_iam_member" "deploy_storage_admin" {
+  project = var.project_id
+  role    = "roles/storage.admin"
   member  = google_service_account.deploy.member
 }

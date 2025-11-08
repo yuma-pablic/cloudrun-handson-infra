@@ -2,7 +2,6 @@ resource "google_project_service" "default" {
   for_each = toset([
     "artifactregistry.googleapis.com",
     "run.googleapis.com",
-    "cloudbuild.googleapis.com",
     "container.googleapis.com",
     "secretmanager.googleapis.com",
     "cloudscheduler.googleapis.com",

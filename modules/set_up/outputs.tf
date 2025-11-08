@@ -1,7 +1,15 @@
-output "repository_id" {
-  value = google_cloudbuildv2_repository.cnsrun_app_repo.id
+# Workload Identity outputs
+output "workload_identity_provider" {
+  description = "Workload Identity Provider の完全な名前"
+  value       = google_iam_workload_identity_pool_provider.main.name
 }
 
-output "cloud_build_service_account" {
-  value = google_service_account.cnsrun_app_cloud_build.id
+output "terraform_service_account_email" {
+  description = "Terraform 用サービスアカウントのメールアドレス"
+  value       = google_service_account.terraform.email
+}
+
+output "deploy_service_account_email" {
+  description = "アプリケーションデプロイ用サービスアカウントのメールアドレス"
+  value       = google_service_account.deploy.email
 }
